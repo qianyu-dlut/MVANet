@@ -7,7 +7,7 @@ Dichotomous Image Segmentation (DIS) has recently emerged towards high-precision
 Human visual system captures regions of interest by observing them from multiple views. Inspired by it, we model DIS as a multi-view object perception problem and provide a parsimonious multi-view aggregation network (MVANet), which unifies the feature fusion of the distant view and close-up view into a single stream with one encoder-decoder structure. Specifically, we split the high-resolution input images from the original view into the distant view images with global information and close-up view images with local details. Thus, they can constitute a set of complementary multi-view low-resolution input patches.
 ![image](https://github.com/qianyu-dlut/MVANet/assets/73575386/2cff2cc2-ca24-469b-98ab-ed2585329609)
 
-Moreover, two efficient transformer-based multi-view complementary localization and refinement modules are proposed to jointly capturing the localization and restoring the boundary details of the targets. 
+Moreover, two efficient transformer-based multi-view complementary localization and refinement modules (MCLM & MCRM) are proposed to jointly capturing the localization and restoring the boundary details of the targets. 
 ![image](https://github.com/qianyu-dlut/MVANet/assets/73575386/14c3e234-bdfe-49a5-a5ed-c82cc776d947)
 
 We achieves state-of-the-art performance in terms of almost all metrics on the DIS benchmark dataset. 
