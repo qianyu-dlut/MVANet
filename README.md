@@ -17,8 +17,8 @@ We achieves state-of-the-art performance in terms of almost all metrics on the D
 
 
 ## To Do List
-- Release our camere-ready paper on arxiv (to do)
-- Release our model code (to do)
+- Release our camere-ready paper on arxiv (done)
+- Release our training code (to do)
 - Release our model checkpoints (to do)
 - Release our prediction maps (to do)
 
