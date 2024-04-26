@@ -55,6 +55,8 @@ python train.py
 ## III. Testing
 1. Update the data path in config file `./utils/config.py` (line 4~8)
 2. Replace the existing path with the path to your saved model in `./predict.py` (line 14)
+
+    You can also download our trained model at [Google Drive](https://drive.google.com/file/d/1_gabQXOF03MfXnf3EWDK1d_8wKiOemOv/view?usp=sharing).
 3. Start predicting by:
 ```
 python predict.py
@@ -64,11 +66,12 @@ python predict.py
 python test.py
 ```
 
+You can get our prediction maps  at [Google Drive](https://drive.google.com/file/d/1gFlW2atWONyOhifzQR6QmHaZ8Qc9GgdL/view?usp=sharing).
 ## To Do List
 - Release our camere-ready paper on arxiv (done)
 - Release our training code (done)
-- Release our model checkpoints (to do)
-- Release our prediction maps (to do)
+- Release our model checkpoints (done)
+- Release our prediction maps (done)
 
 ## Citations
 ```
