@@ -66,7 +66,7 @@ python predict.py
 python test.py
 ```
 
-You can get our prediction maps  at [Google Drive](https://drive.google.com/file/d/1gFlW2atWONyOhifzQR6QmHaZ8Qc9GgdL/view?usp=sharing).
+You can get our prediction maps  at [Google Drive](https://drive.google.com/file/d/1z21OMJ0Zl7JYKFxqR3P2YJTT3zay8doq/view?usp=sharing).
 ## To Do List
 - Release our camere-ready paper on arxiv (done)
 - Release our training code (done)
