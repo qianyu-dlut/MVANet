@@ -115,7 +115,7 @@ class MCLM(nn.Module):
         b, c, h, w = l.size() 
         # 4,c,h,w -> 1,c,2h,2w
         concated_locs = rearrange(l, '(hg wg b) c h w -> b c (hg h) (wg w)', hg=2, wg=2)
-        self.p_poses = []
+        
         pools = []
         for pool_ratio in self.pool_ratios:
              # b,c,h,w
@@ -136,7 +136,7 @@ class MCLM(nn.Module):
         g_hw_b_c = rearrange(g, 'b c h w -> (h w) b c')
         g_hw_b_c = g_hw_b_c + self.dropout1(self.attention[0](g_hw_b_c + self.g_pos, pools + self.p_poses, pools)[0])
         g_hw_b_c = self.norm1(g_hw_b_c)
-        g_hw_b_c = g_hw_b_c + self.dropout2(self.linear2(self.dropout(self.activation(self.linear1(g_hw_b_c)))))
+        g_hw_b_c = g_hw_b_c + self.dropout2(self.linear2(self.dropout(self.activation(self.linear1(g_hw_b_c)).clone())))
         g_hw_b_c = self.norm2(g_hw_b_c)
 
         # attention between origin locs (q) & freashed glb (k,v)
@@ -212,7 +212,7 @@ class inf_MCLM(nn.Module):
         g_hw_b_c = rearrange(g, 'b c h w -> (h w) b c')
         g_hw_b_c = g_hw_b_c + self.dropout1(self.attention[0](g_hw_b_c + self.g_pos, pools + self.p_poses, pools)[0])
         g_hw_b_c = self.norm1(g_hw_b_c)
-        g_hw_b_c = g_hw_b_c + self.dropout2(self.linear2(self.dropout(self.activation(self.linear1(g_hw_b_c)))))
+        g_hw_b_c = g_hw_b_c + self.dropout2(self.linear2(self.dropout(self.activation(self.linear1(g_hw_b_c)).clone())))
         g_hw_b_c = self.norm2(g_hw_b_c)
 
         # attention between origin locs (q) & freashed glb (k,v)
@@ -350,7 +350,7 @@ class inf_MCRM(nn.Module):
 class MVANet(nn.Module):  
     def __init__(self):
         super().__init__()
-        self.backbone = SwinB(pretrained=False)
+        self.backbone = SwinB(pretrained=True)
         emb_dim = 128
         self.sideout5 =  nn.Sequential(nn.Conv2d(emb_dim, 1, kernel_size=3, padding=1))
         self.sideout4 = nn.Sequential(nn.Conv2d(emb_dim, 1, kernel_size=3, padding=1))
@@ -428,11 +428,11 @@ class MVANet(nn.Module):
         final_output = self.upsample2(final_output)
         final_output = self.output(final_output)
         ####
-        sideout5 = self.sideout5(e5).cuda() ###(1,1,16,16)；是cross-att之后出来的东西
-        sideout4 = self.sideout4(e4) ###(5,1,32,32)
-        sideout3 = self.sideout3(e3) ###(5,1,64,64)
-        sideout2 = self.sideout2(e2) ###(5,1,128,128)
-        sideout1 = self.sideout1(e1) ###(5,1,128,128)
+        sideout5 = self.sideout5(e5).cuda()
+        sideout4 = self.sideout4(e4) 
+        sideout3 = self.sideout3(e3) 
+        sideout2 = self.sideout2(e2) 
+        sideout1 = self.sideout1(e1) 
         #######glb_sideouts ######
         glb5 = self.sideout5(glb_e5)
         glb4 = sideout4[-1,:,:,:].unsqueeze(0)
@@ -454,7 +454,7 @@ class MVANet(nn.Module):
 class inf_MVANet(nn.Module):  
     def __init__(self):
         super().__init__()
-        self.backbone = SwinB(pretrained=False)
+        self.backbone = SwinB(pretrained=True)
 
         emb_dim = 128
         self.output5 = make_cbr(1024, emb_dim)
