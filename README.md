@@ -26,6 +26,11 @@ We achieves state-of-the-art performance in terms of almost all metrics on the D
     <img src="https://github.com/qianyu-dlut/MVANet/assets/73575386/6f3c0c1b-6cc2-4f0d-b563-7dc0c9050a52" alt="image" width="900"/>
 </p>
 
+We have optimized the code and achieved an enhanced FPS performance, reaching 15.2.
+<p align="center">
+    <img src="https://github.com/qianyu-dlut/MVANet/assets/73575386/4de86a52-5b55-4095-9a1f-afda40ce7f7a" alt="image" width="500"/>
+</p>
+
 Here are some of our visual results:
 <p align="center">
     <img src="https://github.com/qianyu-dlut/MVANet/assets/73575386/3c4443d8-fd6f-49f3-988d-45215bc1d8e6" alt="image" width="900"/>
@@ -47,7 +52,8 @@ Here are some of our visual results:
 + scipy
 
 ## II. Training
-You can start training by simpy run:
+1. Download the pretrained model at [Google Drive](https://drive.google.com/file/d/1-Zi_DtCT8oC2UAZpB3_XoFOIxIweIAyk/view?usp=sharing).
+2. Then, you can start training by simply run:
 ```
 python train.py
 ```
@@ -61,7 +67,7 @@ python train.py
 ```
 python predict.py
 ```
-4. Change the predicted model path in `./test.py` (line 17) and start testing:
+4. Change the predicted map path in `./test.py` (line 17) and start testing:
 ```
 python test.py
 ```
