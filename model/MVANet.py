@@ -243,8 +243,8 @@ class MCRM(nn.Module):
             nn.MultiheadAttention(d_model, num_heads, dropout=0.1)
         ])
 
-        self.linear1 = nn.Linear(d_model, d_model * 2)
-        self.linear2 = nn.Linear(d_model * 2, d_model)
+        self.linear3 = nn.Linear(d_model, d_model * 2)
+        self.linear4 = nn.Linear(d_model * 2, d_model)
         self.norm1 = nn.LayerNorm(d_model)
         self.norm2 = nn.LayerNorm(d_model)
         self.dropout = nn.Dropout(0.1)
@@ -282,7 +282,7 @@ class MCRM(nn.Module):
         outputs = torch.cat(outputs, 1)  
         src = loc.view(4, c, -1).permute(2, 0, 1) + self.dropout1(outputs)
         src = self.norm1(src)
-        src = src + self.dropout2(self.linear2(self.dropout(self.activation(self.linear1(src)).clone())))
+        src = src + self.dropout2(self.linear4(self.dropout(self.activation(self.linear3(src)).clone())))
         src = self.norm2(src)
 
         src = src.permute(1, 2, 0).reshape(4, c, h, w)  # freshed loc
