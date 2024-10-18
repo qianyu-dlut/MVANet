@@ -38,18 +38,24 @@ Here are some of our visual results:
 
 
 ## I. Requiremets
-+ python==3.7
-+ torch==1.10.0
-+ torchvision==0.11.0
-+ mmcv-full==1.3.17
-+ mmdet==2.17.0
-+ mmengine==0.8.1
-+ mmsegmentation==0.19.0
-+ numpy
-+ ttach
-+ einops
-+ timm
-+ scipy
+
+1. Clone this repository
+```
+git clone git@github.com:qianyu-dlut/MVANet.git
+cd MVANet
+```
+
+2.  Install packages
+
+```
+conda create -n mvanet python==3.7
+conda activate mvanet
+pip install torch==1.10.1+cu102 torchvision==0.11.2+cu102 torchaudio==0.10.1 -f https://download.pytorch.org/whl/cu102/torch_stable.html 
+pip install -U openmim
+mim install mmcv-full==1.3.17
+pip install -r requirements.txt
+
+```
 
 ## II. Training
 1. Download the pretrained model at [Google Drive](https://drive.google.com/file/d/1-Zi_DtCT8oC2UAZpB3_XoFOIxIweIAyk/view?usp=sharing).
