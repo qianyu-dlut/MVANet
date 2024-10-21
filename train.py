@@ -23,7 +23,7 @@ parser.add_argument('--lr_gen', type=float, default=1e-5, help='learning rate')
 parser.add_argument('--batchsize', type=int, default=1, help='training batch size')
 parser.add_argument('--trainsize', type=int, default=1024, help='training dataset size')
 parser.add_argument('--decay_rate', type=float, default=0.9, help='decay rate of learning rate')
-parser.add_argument('--decay_epoch', type=int, default=80, help='every n epochs decay learning rate')
+parser.add_argument('--decay_epoch', type=int, default=60, help='every n epochs decay learning rate')
 
 opt = parser.parse_args()
 print('Generator Learning Rate: {}'.format(opt.lr_gen))
