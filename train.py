@@ -31,6 +31,10 @@ print('Generator Learning Rate: {}'.format(opt.lr_gen))
 if hasattr(torch.cuda, 'empty_cache'):
     torch.cuda.empty_cache()
 generator = MVANet()
+
+# enabel to load the pre-trained model
+generator.load_state_dict(torch.load(os.path.join(os.getcwd(), "saved_model/MVANet", "Model_80.pth")), strict=False)
+
 generator.cuda()
 
 generator_params = generator.parameters()
