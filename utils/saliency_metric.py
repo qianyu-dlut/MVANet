@@ -1,7 +1,8 @@
 import numpy as np
 from scipy import ndimage
 from scipy.ndimage import convolve, distance_transform_edt as bwdist
-
+_TYPE = np.float64
+_EPS = np.spacing(1)
 
 class cal_fm(object):
     # Fmeasure(maxFm,meanFm)---Frequency-tuned salient region detection(CVPR 2009)
@@ -11,14 +12,16 @@ class cal_fm(object):
         self.precision = np.zeros((self.num, self.thds))
         self.recall = np.zeros((self.num, self.thds))
         self.meanF = np.zeros((self.num,1))
+        self.changeable_fms = []
         self.idx = 0
 
     def update(self, pred, gt):
         if gt.max() != 0:
-            prediction, recall, Fmeasure_temp = self.cal(pred, gt)
+            prediction, recall, Fmeasure_temp, changeable_fms = self.cal(pred, gt)
             self.precision[self.idx, :] = prediction
             self.recall[self.idx, :] = recall
             self.meanF[self.idx, :] = Fmeasure_temp
+            self.changeable_fms.append(changeable_fms)
         self.idx += 1
 
     def cal(self, pred, gt):
@@ -45,17 +48,22 @@ class cal_fm(object):
         nontargetHist, _ = np.histogram(nontarget, bins=range(256))
         targetHist = np.cumsum(np.flip(targetHist), axis=0)
         nontargetHist = np.cumsum(np.flip(nontargetHist), axis=0)
-        precision = targetHist / (targetHist + nontargetHist + 1e-8)
+        precision = targetHist / (targetHist + nontargetHist + _EPS)
         recall = targetHist / np.sum(gt)
-        return precision, recall, meanF
+        numerator = 1.3 * precision * recall
+        denominator = np.where(numerator == 0, 1, 0.3 * precision + recall)
+        changeable_fms = numerator / denominator
+        return precision, recall, meanF, changeable_fms
 
     def show(self):
         assert self.num == self.idx
         precision = self.precision.mean(axis=0)
         recall = self.recall.mean(axis=0)
-        fmeasure = 1.3 * precision * recall / (0.3 * precision + recall + 1e-8)
+        changeable_fm = np.mean(np.array(self.changeable_fms, dtype=_TYPE), axis=0)
+        # fmeasure = 1.3 * precision * recall / (0.3 * precision + recall + _EPS)
         fmeasure_avg = self.meanF.mean(axis=0)
-        return fmeasure.max(),fmeasure_avg[0],precision,recall
+        # return fmeasure.max(),fmeasure_avg[0],precision,recall
+        return changeable_fm.max(),fmeasure_avg[0],precision,recall
 
 
 class cal_mae(object):
@@ -71,7 +79,8 @@ class cal_mae(object):
         return np.mean(np.abs(pred - gt))
 
     def show(self):
-        return np.mean(self.prediction)
+        # return np.mean(self.prediction)
+        return np.mean(np.array(self.prediction, _TYPE))
 
 class cal_dice(object):
     # mean absolute error
@@ -91,7 +100,8 @@ class cal_dice(object):
         return (2. * intersection + smooth) / (np.sum(y_true_f) + np.sum(y_pred_f) + smooth)
 
     def show(self):
-        return np.mean(self.prediction)
+        # return np.mean(self.prediction)
+        return np.mean(np.array(self.prediction, _TYPE))
 
 class cal_ber(object):
     # mean absolute error
@@ -111,11 +121,12 @@ class cal_ber(object):
         tn = ((1-binary) * (1-hard_gt)).sum()
         Np = hard_gt.sum()
         Nn = (1-hard_gt).sum()
-        ber = (1-(tp/(Np+1e-8)+tn/(Nn+1e-8))/2)
+        ber = (1-(tp/(Np+_EPS)+tn/(Nn+_EPS))/2)
         return ber
 
     def show(self):
-        return np.mean(self.prediction)
+        # return np.mean(self.prediction)
+        return np.mean(np.array(self.prediction, _TYPE))
 
 class cal_acc(object):
     # mean absolute error
@@ -139,7 +150,8 @@ class cal_acc(object):
         return acc
 
     def show(self):
-        return np.mean(self.prediction)
+        # return np.mean(self.prediction)
+        return np.mean(np.array(self.prediction, _TYPE))
 
 class cal_iou(object):
     # mean absolute error
@@ -166,7 +178,8 @@ class cal_iou(object):
 
         return (intersection + smooth) / (union + smooth)
     def show(self):
-        return np.mean(self.prediction)
+        # return np.mean(self.prediction)
+        return np.mean(np.array(self.prediction, _TYPE))
 
     # smooth = 1e-5
     #
@@ -193,7 +206,8 @@ class cal_sm(object):
         self.prediction.append(score)
 
     def show(self):
-        return np.mean(self.prediction)
+        # return np.mean(self.prediction)
+        return np.mean(np.array(self.prediction, _TYPE))
 
     def cal(self, pred, gt):
         y = np.mean(gt)
@@ -215,7 +229,7 @@ class cal_sm(object):
     def s_object(self, in1, in2):
         x = np.mean(in1[in2])
         sigma_x = np.std(in1[in2])
-        return 2 * x / (pow(x, 2) + 1 + sigma_x + 1e-8)
+        return 2 * x / (pow(x, 2) + 1 + sigma_x + _EPS)
 
     def region(self, pred, gt):
         [y, x] = ndimage.center_of_mass(gt)
@@ -270,7 +284,7 @@ class cal_sm(object):
         beta = (x * x + y * y) * (sigma_x + sigma_y)
 
         if alpha != 0:
-            score = alpha / (beta + 1e-8)
+            score = alpha / (beta + _EPS)
         elif alpha == 0 and beta == 0:
             score = 1
         else:
@@ -305,24 +319,26 @@ class cal_em(object):
             align_matrix = self.AlignmentTerm(dFM, dGT)
             enhanced_matrix = self.EnhancedAlignmentTerm(align_matrix)
         [w, h] = np.shape(GT)
-        score = sum(sum(enhanced_matrix))/ (w * h - 1 + 1e-8)
+        score = sum(sum(enhanced_matrix))/ (w * h - 1 + _EPS)
         return score
     def AlignmentTerm(self,dFM,dGT):
         mu_FM = np.mean(dFM)
         mu_GT = np.mean(dGT)
         align_FM = dFM - mu_FM
         align_GT = dGT - mu_GT
-        align_Matrix = 2. * (align_GT * align_FM)/ (align_GT* align_GT + align_FM* align_FM + 1e-8)
+        align_Matrix = 2. * (align_GT * align_FM)/ (align_GT* align_GT + align_FM* align_FM + _EPS)
         return align_Matrix
     def EnhancedAlignmentTerm(self,align_Matrix):
         enhanced = np.power(align_Matrix + 1,2) / 4
         return enhanced
     def show(self):
-        return np.mean(self.prediction)
+        # return np.mean(self.prediction)
+        return np.mean(np.array(self.prediction, _TYPE))
+
 class cal_wfm(object):
     def __init__(self, beta=1):
         self.beta = beta
-        self.eps = 1e-6
+        self.eps = _EPS
         self.scores_list = []
 
     def update(self, pred, gt):
@@ -393,4 +409,6 @@ class cal_wfm(object):
         return Q
 
     def show(self):
-        return np.mean(self.scores_list)
+        # return np.mean(self.scores_list)
+        return np.mean(np.array(self.scores_list, dtype=_TYPE))
+    
