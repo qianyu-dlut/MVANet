@@ -23,13 +23,9 @@ Moreover, two efficient transformer-based multi-view complementary localization 
 
 We achieves state-of-the-art performance in terms of almost all metrics on the DIS benchmark dataset. 
 <p align="center">
-    <img src="https://github.com/qianyu-dlut/MVANet/assets/73575386/6f3c0c1b-6cc2-4f0d-b563-7dc0c9050a52" alt="image" width="900"/>
+    <img src="https://github.com/user-attachments/assets/bb69818c-989f-4dd6-bbc8-7bb685b59b95" alt="image" width="900"/>
 </p>
 
-We have optimized the code and achieved an enhanced FPS performance, reaching 15.2.
-<p align="center">
-    <img src="https://github.com/qianyu-dlut/MVANet/assets/73575386/4de86a52-5b55-4095-9a1f-afda40ce7f7a" alt="image" width="500"/>
-</p>
 
 Here are some of our visual results:
 <p align="center">
@@ -79,6 +75,11 @@ python test.py
 ```
 
 You can get our prediction maps  at [Google Drive](https://drive.google.com/file/d/1z21OMJ0Zl7JYKFxqR3P2YJTT3zay8doq/view?usp=sharing).
+5. You can get the FPS performance by running:
+```
+python test_fps.py
+```
+
 ## To Do List
 - Release our camere-ready paper on arxiv (done)
 - Release our training code (done)
