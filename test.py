@@ -38,12 +38,12 @@ for items in files:
                 if sal.size != gt.size:
                     x, y = gt.size
                     sal = sal.resize((x, y))
-                gt = np.asarray(gt, np.float32)
+                gt = np.asarray(gt, np.float64)
                 gt /= (gt.max() + 1e-8)
                 gt[gt > 0.5] = 1
                 gt[gt != 1] = 0
                 res = sal
-                res = np.array(res)
+                res = np.array(res, np.float64)
                 if res.max() == res.min():
                     res = res / 255
                 else:
@@ -69,5 +69,5 @@ for items in files:
             ber = ber.show()
             acc = acc.show()
             print(
-                'dataset: {} MAE: {:.4f} Ber: {:.4f} maxF: {:.4f} avgF: {:.4f} wfm: {:.4f} Sm: {:.4f} Em: {:.4f} M_dice: {:.4f} M_iou: {:.4f} Acc: {:.4f}'.format(
+                'dataset: {} MAE: {:.4f} Ber: {:.4f} maxF: {:.4f} avgF: {:.4f} wfm: {:.4f} Sm: {:.4f} adpEm: {:.4f} M_dice: {:.4f} M_iou: {:.4f} Acc: {:.4f}'.format(
                     name, MAE, ber, maxf, meanf, wfm, sm, em, m_dice, m_iou, acc))
