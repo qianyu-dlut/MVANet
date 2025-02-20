@@ -472,7 +472,6 @@ class inf_MVANet(nn.Module):
         self.dec_blk3 = inf_MCRM(emb_dim, 1, [2, 4, 8])
         self.dec_blk4 = inf_MCRM(emb_dim, 1, [2, 4, 8])
 
-
         self.insmask_head = nn.Sequential(
             nn.Conv2d(emb_dim, 384, kernel_size=3, padding=1),
             nn.BatchNorm2d(384),

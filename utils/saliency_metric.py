@@ -26,7 +26,6 @@ class cal_fm(object):
             self.recall[self.idx, :] = recall
             self.meanF[self.idx, :] = Fmeasure_temp
             self.changeable_fms.append(changeable_fms)
-
         self.idx += 1
 
     def cal(self, pred, gt):
