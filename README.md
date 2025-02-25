@@ -21,9 +21,9 @@ Moreover, two efficient transformer-based multi-view complementary localization 
 </p>
 
 
-NOTE：Initially, we calculated Fm by averaging precision and recall, then using these averages to compute Fm. Thanks to feedback, we identified this bug and revised the approach to compute Fm for each image individually before averaging. We have updated the saliency_metric file to fix this issue. Additionally, we have updated the results on the DIS-VD dataset and included the HCE metric. The updated results are shown below:
+NOTE：Initially, we calculated Fm by averaging precision and recall, then using these averages to compute Fm. Thanks to feedback, we identified this bug and revised the approach to compute Fm for each image individually before averaging. We have updated the `./utils/saliency_metric.py` file to fix this issue. Additionally, we have updated the results on the DIS-VD dataset and included the HCE metric. The updated results are shown below:
 <p align="center">
-    <img src="https://github.com/user-attachments/assets/034c326b-202d-4681-ac04-be42f882389e" alt="image" width="900"/>
+    <img src="https://github.com/user-attachments/assets/3a566426-91b8-42a7-92ce-b401c60c1bf8" alt="image" width="900"/>
 </p>
 
 Here are some of our visual results:
