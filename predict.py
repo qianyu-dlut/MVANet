@@ -38,7 +38,7 @@ to_test ={
 transforms = tta.Compose(
     [
         tta.HorizontalFlip(),
-        tta.Scale(scales=[0.75, 1, 1.25], interpolation='bilinear', align_corners=False),
+        tta.Scale(scales=[0.75, 1, 1.125], interpolation='bilinear', align_corners=False),
     ]
 )
 
